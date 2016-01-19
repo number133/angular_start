@@ -100,11 +100,20 @@ myApp.factory('kartService', function(){
 	};
 });
 
-myApp.controller('HeaderController', ['$scope', function HeaderController($scope) {
+myApp.controller('HeaderController', ['$scope', '$location', function HeaderController($scope, $location) {
         $scope.appDetails = {
 			title: "BooKart",
 			tagline: "We have 1 million books for you"
 		};
+
+		$scope.nav = {};
+		$scope.nav.isActive = function(path){
+			if (path === $location.path()) {
+				return true;
+			}
+
+			return false;
+		}
 }]);
 
 myApp.controller('BookListController', ['$scope', 'bookService', 'kartService', 
