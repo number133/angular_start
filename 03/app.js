@@ -7,7 +7,8 @@ myApp.config(function($routeProvider){
 			controller: "BookListController"
 		})
 		.when("/kart", {
-			templateUrl: "partials/kart-list.html"
+			templateUrl: "partials/kart-list.html",
+			controller: "kartListController"
 		})
 		.otherwise({
 			redirectTo: "/books"
@@ -87,5 +88,12 @@ myApp.controller('BookListController', ['$scope', function BookListController($s
 
         $scope.addToKart = function(book){
         	console.log('Book: ' + book);
+        }
+}]);
+
+myApp.controller('KartListController', ['$scope', function KartListController($scope) {
+        $scope.kart = [];
+        $scope.buy = function(book){
+        	console.log('Buy: ' + book);	
         }
 }]);
