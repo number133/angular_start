@@ -8,22 +8,15 @@ myApp.config(function($routeProvider){
 		})
 		.when("/kart", {
 			templateUrl: "partials/kart-list.html",
-			controller: "kartListController"
+			controller: "KartListController"
 		})
 		.otherwise({
 			redirectTo: "/books"
 		});
 });
 
-myApp.controller('HeaderController', ['$scope', function HeaderController($scope) {
-        $scope.appDetails = {
-			title: "BooKart",
-			tagline: "We have 1 million books for you"
-		};
-}]);
-
-myApp.controller('BookListController', ['$scope', function BookListController($scope) {
-        $scope.books = [
+myApp.factory('bookService', function(){
+	var books = [
         	{
         		imgUrl: "adultery.jpeg",
         		name: "Adultery",
@@ -84,16 +77,49 @@ myApp.controller('BookListController', ['$scope', function BookListController($s
         		releaseDate: "25-08-2000",
         		details: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed et sunt illum provident placeat fugit doloremque blanditiis itaque inventore magni maxime voluptatibus animi dolorum eius eos ipsa, nostrum accusamus cumque."
         	}
-        ];
+    ];
+    return {
+    	getBooks: function(){
+    		return books;
+    	}
+    };
+});
+
+myApp.factory('kartService', function(){
+	var kart = [];
+	return {
+		getKart: function(){
+			return kart;
+		},
+		addToKart: function(book){
+			kart.push(book);
+		},
+		buy: function(book){
+			alert('Thanks for buying: ', book.name);
+		}
+	};
+});
+
+myApp.controller('HeaderController', ['$scope', function HeaderController($scope) {
+        $scope.appDetails = {
+			title: "BooKart",
+			tagline: "We have 1 million books for you"
+		};
+}]);
+
+myApp.controller('BookListController', ['$scope', 'bookService', 'kartService', 
+	function BookListController($scope, bookService, kartService) {
+        $scope.books = bookService.getBooks();
 
         $scope.addToKart = function(book){
-        	console.log('Book: ' + book);
+        	kartService.addToKart(book);
         }
 }]);
 
-myApp.controller('KartListController', ['$scope', function KartListController($scope) {
-        $scope.kart = [];
+myApp.controller('KartListController', ['$scope', 'kartService', 
+	function KartListController($scope, kartService) {
+        $scope.kart = kartService.getKart();
         $scope.buy = function(book){
-        	console.log('Buy: ' + book);	
+        	kartService.buy(book);
         }
 }]);
