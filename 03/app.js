@@ -1,11 +1,27 @@
-angular.module('app', [])
-    .controller('HeaderController', ['$scope', function HeaderController($scope) {
+var myApp = angular.module('app', ['ngRoute']);
+
+myApp.config(function($routeProvider){
+	$routeProvider
+		.when("/books", {
+			templateUrl: "partials/book-list.html",
+			controller: "BookListController"
+		})
+		.when("/kart", {
+			templateUrl: "partials/kart-list.html"
+		})
+		.otherwise({
+			redirectTo: "/books"
+		});
+});
+
+myApp.controller('HeaderController', ['$scope', function HeaderController($scope) {
         $scope.appDetails = {
 			title: "BooKart",
 			tagline: "We have 1 million books for you"
 		};
-	}])
-	.controller('BookListController', ['$scope', function BookListController($scope) {
+}]);
+
+myApp.controller('BookListController', ['$scope', function BookListController($scope) {
         $scope.books = [
         	{
         		imgUrl: "adultery.jpeg",
@@ -72,4 +88,4 @@ angular.module('app', [])
         $scope.addToKart = function(book){
         	console.log('Book: ' + book);
         }
-	}]);
+}]);
